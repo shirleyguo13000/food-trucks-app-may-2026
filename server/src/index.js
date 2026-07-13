@@ -74,6 +74,19 @@ async function getTopRatedFoodTrucks() {
 
 // 6. getFoodTrucksSortedByRating()
 
+// Function to retrieve all food trucks from the database
+// sorted by their rating from highest to lowest
+async function getFoodTrucksSortedByRating() {
+
+  //  a SQL query to select all food trucks
+  // and order the results by the rating column in descending order
+  const result = await db.query(
+    "SELECT * FROM food_trucks ORDER BY rating DESC"
+  );
+
+  // Return only the rows containing the food truck data
+  return result.rows;
+}
 // 7. getFoodTrucksSortedByPrice()
 
 // 8. getFoodTrucksCount()
@@ -138,11 +151,31 @@ app.get("/get-food-truck-by-id/:id", async (req,res) => {
 
 // 4. GET /get-food-trucks-by-price/:price - Hailey
 
-// 5. GET /get-top-rated-food-trucks - Arianne
+// 5. GET /get-top-rated-food-trucks - Zesty pepper 
 
-// 6. GET /get-food-trucks-sorted-by-rating - Morgan
 
-// 7. GET /get-food-trucks-sorted-by-price - Ysabel
+// 6. GET /get-food-trucks-sorted-by-rating -  Morgan
+// GET endpoint to retrieve all food trucks sorted by their rating
+app.get("/get-food-trucks-sorted-by-rating", async (req, res) => {
+  try {
+    // Calls the helper function to get food trucks from the database
+    // ordered from highest rating to lowest rating
+    const foodTrucks = await getFoodTrucksSortedByRating();
+
+    // Send a successful response (HTTP 200) with the food truck data as JSON
+    res.status(200).json(foodTrucks);
+
+  } catch (error) {
+    // Logs the error in the server console for debugging
+    console.error(error);
+
+    // Send an error response (HTTP 500) if something goes wrong
+    res.status(500).json({
+      error: "Failed to retrieve food trucks."
+    });
+  }
+});
+// 7. GET /get-food-trucks-sorted-by-price - Jana
 
 // 8. GET /get-food-trucks-count - Meribel
 

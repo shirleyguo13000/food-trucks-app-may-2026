@@ -40,7 +40,21 @@ async function getAllFoodTrucks() {
 // 6. getFoodTrucksSortedByRating()
 
 // 7. getFoodTrucksSortedByPrice()
+app.get("/get-food-trucks-sorted-by-price", async (req, res) => {
+  const foodTrucks = await getFoodTrucksSortedByPrice();
 
+  res.json(foodTrucks);
+});
+async function getFoodTrucksSortedByPrice() {
+  const result = await db.query(
+    "SELECT * FROM food_trucks ORDER BY price_level ASC"
+  );
+
+  return result.rows;
+}
+
+
+//     
 // 8. getFoodTrucksCount()
 
 // 9. addOneFoodTruck(...)

@@ -152,6 +152,7 @@ async function updateFoodTruckLocation(id, newLocation) {
     id,
     newLocation,
   ]);
+  return result.rows[0];
 }
 
 // 12. updateFoodTruckRating(id, newRating)

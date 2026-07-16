@@ -142,8 +142,12 @@ async function deleteOneFoodTruck(id) {
   return result.rows[0];
 }
 
+
+// ** CLEAN AND COMMENT CODE**
 // 11. updateFoodTruckLocation(id, newLocation)
+// async function with two parameters declared
 async function updateFoodTruckLocation(id, newLocation) {
+  // sending the data to SQL data base 
   await db.query("UPDATE food_trucks SET current_location =$1 WHERE id = $2", [
     id,
     newLocation,
@@ -246,10 +250,15 @@ app.post("/delete-one-food-truck/:id", async (req, res) => {
   await deleteOneFoodTruck(id);
 });
 
+// **CLEAN AND COMMENT CODE**
 // 11. POST /update-food-truck-location - Shirley
+// sending post request to express
 app.post("/update-food-truck-location", async (req, res) => {
+// requesting two destructured body parameters 
   const { id, newLocation } = req.body;
+// passes the two reqeusted data as parameters in the helper function set up earlier
   await updateFoodTruckLocation(id, newLocation);
+  // response message after the post request is successful
   res.send("Success! The food truck location was updated!");
 });
 

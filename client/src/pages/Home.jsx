@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 
 function Home() {
   const [foodtrucks, setFoodtrucks] = useState([]);
-  const [foodtruckCount, setFoodtruckCount] = useState([]);
+  const [foodtruckCount, setFoodtruckCount] = useState(0);
 
   const foodtruckAPI = async () => {
     try {
@@ -24,6 +24,32 @@ function Home() {
       const data = await response.json();
       console.log("data", data);
       setFoodtruckCount(data);
+    } catch (error) {
+      console.log("error:", error.message);
+    }
+  };
+
+  // Calls the delete endpoint for a given truck id, then removes that
+  // truck from local state so the UI updates immediately without a refetch
+  const deleteFoodTruck = async (id) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/delete-one-food-truck/${id}`,
+        { method: "POST" },
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to delete food truck");
+      }
+
+      // Remove the deleted truck from state by keeping everything
+      // that does NOT match the deleted id
+      setFoodtrucks((prevTrucks) =>
+        prevTrucks.filter((truck) => truck.id !== id),
+      );
+
+      // Keep the count in sync with the new list length
+      setFoodtruckCount((prevCount) => prevCount - 1);
     } catch (error) {
       console.log("error:", error.message);
     }
@@ -75,6 +101,12 @@ function Home() {
               <span className="static-p">Rating:</span>
               <span className="dynamic-p">{foodtruck.rating}</span>
             </p>
+            <button
+              className="delete-btn"
+              onClick={() => deleteFoodTruck(foodtruck.id)}
+            >
+              Delete
+            </button>
           </div>
         ))}
       </div>

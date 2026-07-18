@@ -135,7 +135,10 @@ async function deleteOneFoodTruck(id) {
   return result.rows[0];
 }
 
+
+// ** CLEAN AND COMMENT CODE**
 // 11. updateFoodTruckLocation(id, newLocation)
+// async function with two parameters declared
 async function updateFoodTruckLocation(id, newLocation) {
   const result = await db.query(
     "UPDATE food_trucks SET current_location = $1 WHERE id = $2 RETURNING *",
@@ -305,22 +308,13 @@ app.post("/delete-one-food-truck/:id", async (req, res) => {
   }
 });
 
+// **CLEAN AND COMMENT CODE**
 // 11. POST /update-food-truck-location - Shirley
+// sending post request to express
 app.post("/update-food-truck-location", async (req, res) => {
-  try {
-    const { id, newLocation } = req.body;
-    const truck = await updateFoodTruckLocation(id, newLocation);
-    if (truck) {
-      res.send(
-        `Success! ${truck.name}'s location was updated to ${truck.current_location}.`,
-      );
-    } else {
-      res.status(404).send(`Food truck with ID ${id} not found.`);
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Failed to update food truck location." });
-  }
+  const { id, newLocation } = req.body;
+  await updateFoodTruckLocation(id, newLocation);
+  res.send("Success! The food truck location was updated!");
 });
 
 // 12. POST /update-food-truck-rating - BONUS! - ZESTY
